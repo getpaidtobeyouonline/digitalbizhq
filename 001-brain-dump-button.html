@@ -114,7 +114,14 @@
   .empty{font-size:13px;color:var(--dbhq-gray);opacity:.6;padding:6px 6px 12px;font-style:italic;}
 
   .worrynote{font-size:12.5px;color:var(--dbhq-gray);opacity:.75;padding:4px 6px 12px;line-height:1.5;}
-  footer{text-align:center;margin-top:34px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dbhq-gray);opacity:.5;}
+  footer{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:38px;padding-bottom:4px;}
+  .footlogo{
+    width:58px;height:58px;border-radius:14px;border:3px solid var(--dbhq-cyan);
+    background:var(--dbhq-black);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 22px rgba(0,191,230,.4);
+  }
+  .footlogo svg{width:34px;height:38px;}
+  .foottag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dbhq-gray);opacity:.55;}
 </style>
 </head>
 <body>
@@ -156,7 +163,16 @@
     <button class="btn ghost" id="editBtn">Back to edit</button>
   </section>
 
-  <footer>Digital Biz HQ</footer>
+  <footer>
+    <div class="footlogo" aria-label="Digital Biz HQ">
+      <svg viewBox="0 0 34 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- vertical bar -->
+        <rect x="2" y="2" width="6.5" height="34" rx="2" fill="#00BFE6"/>
+        <!-- D bowl -->
+        <path d="M12.5 2 H19 C27 2 32 9 32 19 C32 29 27 36 19 36 H12.5 V28.5 H18 C22.5 28.5 24 24.5 24 19 C24 13.5 22.5 9.5 18 9.5 H12.5 Z" fill="#00BFE6"/>
+      </svg>
+    </div>
+  </footer>
 </div>
 
 <script>
