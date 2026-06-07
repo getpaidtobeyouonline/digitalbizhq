@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Brain Dump Button | Digital Biz HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dbhq-cyan:#00BFE6;
+    --dbhq-mint:#00FF89;
+    --dbhq-electric:#00D4FF;
+    --dbhq-navy:#07111F;
+    --dbhq-black:#050505;
+    --dbhq-white:#FFFFFF;
+    --dbhq-gray:#D9E3EA;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--dbhq-black);}
+  body{
+    font-family:'Montserrat',sans-serif;
+    color:var(--dbhq-white);
+    min-height:100vh;
+    background:
+      radial-gradient(120% 70% at 50% -10%, rgba(0,191,230,.12), transparent 55%),
+      radial-gradient(90% 60% at 50% 115%, rgba(0,255,137,.08), transparent 60%),
+      var(--dbhq-black);
+    padding:0 18px calc(40px + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:520px;margin:0 auto;}
+
+  /* header */
+  header{padding:26px 4px 14px;text-align:center;}
+  .wordmark{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.06em;line-height:1;color:var(--dbhq-white);}
+  .wordmark b{color:var(--dbhq-cyan);font-weight:400;}
+  .tagline{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dbhq-gray);opacity:.7;margin-top:6px;}
+  .appname{font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:.9;letter-spacing:.02em;margin-top:18px;
+    background:linear-gradient(180deg,var(--dbhq-white) 0%,var(--dbhq-cyan) 75%,var(--dbhq-mint) 130%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .appsub{font-size:14px;color:var(--dbhq-gray);margin-top:8px;line-height:1.5;}
+
+  /* screens */
+  .screen{display:none;animation:fade .35s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* capture screen */
+  label.fieldlabel{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dbhq-gray);margin:30px 2px 8px;}
+  textarea{
+    width:100%;min-height:160px;resize:vertical;border-radius:16px;
+    background:var(--dbhq-navy);border:1px solid rgba(0,191,230,.25);
+    color:var(--dbhq-white);font-family:'Montserrat',sans-serif;font-size:16px;line-height:1.55;padding:16px;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  textarea::placeholder{color:var(--dbhq-gray);opacity:.5;}
+  textarea:focus{outline:none;border-color:var(--dbhq-electric);box-shadow:0 0 0 3px rgba(0,212,255,.25), 0 0 22px rgba(0,212,255,.25);}
+
+  .btn{
+    width:100%;border:none;cursor:pointer;border-radius:16px;
+    font-family:'Montserrat',sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;
+    min-height:58px;margin-top:18px;color:var(--dbhq-black);
+    background:linear-gradient(120deg,var(--dbhq-cyan),var(--dbhq-electric));
+    box-shadow:0 8px 30px rgba(0,191,230,.3);
+    transition:transform .12s ease, box-shadow .2s ease, opacity .2s ease;
+  }
+  .btn:active{transform:translateY(2px) scale(.99);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn.ghost{background:transparent;color:var(--dbhq-gray);border:1px solid rgba(217,227,234,.25);box-shadow:none;font-weight:700;}
+  .btn.ghost:active{transform:scale(.99);}
+
+  /* reward banner */
+  .reward{
+    position:fixed;left:50%;top:18px;transform:translateX(-50%) translateY(-140%);
+    background:linear-gradient(120deg,var(--dbhq-mint),var(--dbhq-cyan));
+    color:var(--dbhq-black);font-weight:800;font-size:15px;letter-spacing:.02em;
+    padding:14px 22px;border-radius:14px;box-shadow:0 0 40px rgba(0,255,137,.6);
+    z-index:50;transition:transform .45s cubic-bezier(.2,1.3,.4,1);white-space:nowrap;max-width:92vw;text-align:center;
+  }
+  .reward.show{transform:translateX(-50%) translateY(0);}
+
+  /* results */
+  .bucket{background:var(--dbhq-navy);border-radius:18px;padding:16px 16px 8px;margin-top:16px;border:1px solid rgba(255,255,255,.05);}
+  .bucket h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;display:flex;align-items:center;gap:10px;}
+  .bucket .count{font-family:'Montserrat';font-size:12px;font-weight:700;background:rgba(255,255,255,.08);color:var(--dbhq-gray);
+    padding:3px 9px;border-radius:20px;margin-left:auto;}
+  .bucket.actions h3{color:var(--dbhq-mint);}
+  .bucket.ideas h3{color:var(--dbhq-cyan);}
+  .bucket.worries h3{color:var(--dbhq-gray);}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .actions .dot{background:var(--dbhq-mint);box-shadow:0 0 10px var(--dbhq-mint);}
+  .ideas .dot{background:var(--dbhq-cyan);box-shadow:0 0 10px var(--dbhq-cyan);}
+  .worries .dot{background:var(--dbhq-gray);}
+
+  ul.items{list-style:none;margin:12px 0 8px;}
+  ul.items li{
+    display:flex;align-items:flex-start;gap:12px;padding:12px 6px;border-top:1px solid rgba(255,255,255,.05);
+    font-size:15px;line-height:1.45;color:var(--dbhq-white);
+  }
+  ul.items li:first-child{border-top:none;}
+  .check{
+    flex:0 0 auto;width:26px;height:26px;border-radius:8px;border:2px solid var(--dbhq-mint);
+    background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .check svg{width:15px;height:15px;color:var(--dbhq-black);opacity:0;transition:opacity .15s ease;}
+  li.done .check{background:var(--dbhq-mint);box-shadow:0 0 16px rgba(0,255,137,.6);}
+  li.done .check svg{opacity:1;}
+  li.done .txt{text-decoration:line-through;color:var(--dbhq-gray);opacity:.6;}
+  .nonaction .bullet{flex:0 0 auto;width:8px;height:8px;border-radius:50%;margin-top:8px;}
+  .ideas .bullet{background:var(--dbhq-cyan);}
+  .worries .bullet{background:var(--dbhq-gray);opacity:.6;}
+  .empty{font-size:13px;color:var(--dbhq-gray);opacity:.6;padding:6px 6px 12px;font-style:italic;}
+
+  .worrynote{font-size:12.5px;color:var(--dbhq-gray);opacity:.75;padding:4px 6px 12px;line-height:1.5;}
+  footer{text-align:center;margin-top:34px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dbhq-gray);opacity:.5;}
+</style>
+</head>
+<body>
+<div class="reward" id="reward">Nice. Your brain is on the page. That counts.</div>
+
+<div class="wrap">
+  <header>
+    <div class="wordmark">DIGITAL BIZ <b>HQ</b></div>
+    <div class="tagline">we do not just learn, we implement</div>
+    <div class="appname">BRAIN DUMP</div>
+    <div class="appsub">Empty your head in one go. We will sort the chaos into actions, ideas, and worries.</div>
+  </header>
+
+  <!-- SCREEN 1: CAPTURE -->
+  <section class="screen active" id="captureScreen">
+    <label class="fieldlabel" for="dump">Everything in your head</label>
+    <textarea id="dump" placeholder="Call the dentist. I think I should rebrand. Worried I am behind everyone. Idea for a free checklist. Need to send that invoice. What if it flops..."></textarea>
+
+    <button class="btn" id="sortBtn">Sort my brain</button>
+  </section>
+
+  <!-- SCREEN 2: RESULTS -->
+  <section class="screen" id="resultsScreen">
+    <div class="bucket actions">
+      <h3><span class="dot"></span> Actions <span class="count" id="cA">0</span></h3>
+      <ul class="items" id="listActions"></ul>
+    </div>
+    <div class="bucket ideas">
+      <h3><span class="dot"></span> Ideas <span class="count" id="cI">0</span></h3>
+      <ul class="items" id="listIdeas"></ul>
+    </div>
+    <div class="bucket worries">
+      <h3><span class="dot"></span> Worries <span class="count" id="cW">0</span></h3>
+      <ul class="items" id="listWorries"></ul>
+      <div class="worrynote">These are out of your head now. They are not facts, they are just thoughts. You do not have to act on any of them today.</div>
+    </div>
+
+    <button class="btn" id="newBtn">New brain dump</button>
+    <button class="btn ghost" id="editBtn">Back to edit</button>
+  </section>
+
+  <footer>Digital Biz HQ</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "dbhq_brain_dump_v1";
+
+  var captureScreen = document.getElementById("captureScreen");
+  var resultsScreen = document.getElementById("resultsScreen");
+  var dump = document.getElementById("dump");
+  var sortBtn = document.getElementById("sortBtn");
+  var newBtn = document.getElementById("newBtn");
+  var editBtn = document.getElementById("editBtn");
+  var reward = document.getElementById("reward");
+
+  var state = load() || { raw:"", items:[] }; // items: {text, bucket, done}
+
+  // ---------- persistence ----------
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)); }catch(e){ return null; } }
+
+  // ---------- sorting logic ----------
+  // AI WIRE POINT: replace sortDump() with a call to an AI model for smarter categorisation.
+  // INPUT: a single raw string (the brain dump).
+  // OUTPUT: array of { text:String, bucket:"action"|"idea"|"worry", done:false }.
+  // The local version below splits the text into fragments and classifies each with keyword heuristics.
+  function sortDump(raw){
+    var fragments = splitFragments(raw);
+    return fragments.map(function(t){
+      return { text: capitalize(t), bucket: classify(t), done:false };
+    });
+  }
+
+  function splitFragments(raw){
+    // split on line breaks and sentence enders, then on long comma runs
+    var parts = raw.split(/[\n\r.;!?]+/);
+    var out = [];
+    parts.forEach(function(p){
+      p = p.trim();
+      if(!p) return;
+      if(p.length > 90 && p.indexOf(",") > -1){
+        p.split(",").forEach(function(c){ c=c.trim(); if(c) out.push(c); });
+      } else {
+        out.push(p);
+      }
+    });
+    return out.filter(function(x){ return x.length > 1; });
+  }
+
+  var WORRY = ["worri","anxious","anxiety","scared","afraid","fear","nervous","stress","overwhelm","behind","not enough","never","cant ","can't","cannot","doubt","what if","imposter","fail","failing","flop","embarrass","panic","dread","hate that","stuck"];
+  var IDEA = ["idea","what if","maybe","could ","i could","might ","wonder","imagine","thinking about","i want to try","concept","brainstorm","vision","someday","dream"];
+  var ACTION = ["call","email","send","finish","write","fix","book","schedule","pay","buy","post","record","reply","follow up","followup","launch","build","make","update","review","plan","draft","set up","setup","ask","message","dm","upload","edit","publish","order","cancel","sign up","signup","need to","have to","must ","should ","todo","to do","remember to"];
+
+  function hasAny(t, list){
+    for(var i=0;i<list.length;i++){ if(t.indexOf(list[i]) > -1) return true; }
+    return false;
+  }
+  function startsWithVerb(t){
+    var verbs = ["call","email","send","finish","write","fix","book","schedule","pay","buy","post","record","reply","launch","build","make","update","review","plan","draft","ask","message","upload","edit","publish","order","cancel","check","grab","add","create","prep","clean","text","print","find","read","watch","start"];
+    var first = t.split(/\s+/)[0];
+    return verbs.indexOf(first) > -1;
+  }
+  function classify(text){
+    var t = text.toLowerCase();
+    // worries win first: emotional load should leave the head as a worry, not a task
+    if(hasAny(t, WORRY)) return "worry";
+    if(startsWithVerb(t) || hasAny(t, ACTION)) return "action";
+    if(hasAny(t, IDEA)) return "idea";
+    // default: a stray thought is an idea, not a chore
+    return "idea";
+  }
+  function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // ---------- render ----------
+  function render(){
+    renderBucket("action", document.getElementById("listActions"), "cA", "Nothing here. That is allowed.");
+    renderBucket("idea", document.getElementById("listIdeas"), "cI", "No loose ideas this time.");
+    renderBucket("worry", document.getElementById("listWorries"), "cW", "No worries surfaced. Good.");
+  }
+  function renderBucket(bucket, ul, countId, emptyMsg){
+    var items = state.items.filter(function(it){ return it.bucket === bucket; });
+    document.getElementById(countId).textContent = items.length;
+    ul.innerHTML = "";
+    if(items.length === 0){
+      var e = document.createElement("div"); e.className="empty"; e.textContent = emptyMsg; ul.appendChild(e); return;
+    }
+    items.forEach(function(it){
+      var idx = state.items.indexOf(it);
+      var li = document.createElement("li");
+      if(bucket === "action"){
+        if(it.done) li.className = "done";
+        li.innerHTML = '<button class="check" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></button><span class="txt"></span>';
+        li.querySelector(".txt").textContent = it.text;
+        li.querySelector(".check").addEventListener("click", function(){ toggleDone(idx); });
+      } else {
+        li.className = "nonaction";
+        li.innerHTML = '<span class="bullet"></span><span class="txt"></span>';
+        li.querySelector(".txt").textContent = it.text;
+      }
+      ul.appendChild(li);
+    });
+  }
+  function toggleDone(idx){
+    state.items[idx].done = !state.items[idx].done;
+    save(); render();
+    if(state.items[idx].done) showReward("One down. That is a real loop.");
+  }
+
+  // ---------- reward ----------
+  var rewardTimer;
+  function showReward(msg){
+    reward.textContent = msg || "Nice. Your brain is on the page. That counts.";
+    reward.classList.add("show");
+    clearTimeout(rewardTimer);
+    rewardTimer = setTimeout(function(){ reward.classList.remove("show"); }, 2400);
+  }
+
+  // ---------- screens ----------
+  function goResults(){ captureScreen.classList.remove("active"); resultsScreen.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+  function goCapture(){ resultsScreen.classList.remove("active"); captureScreen.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+
+  // ---------- actions ----------
+  sortBtn.addEventListener("click", function(){
+    var raw = dump.value.trim();
+    if(!raw){ dump.focus(); return; }
+    state.raw = raw;
+    state.items = sortDump(raw);
+    save();
+    render();
+    goResults();
+    showReward();
+  });
+  newBtn.addEventListener("click", function(){
+    state = { raw:"", items:[] };
+    dump.value = "";
+    save(); goCapture(); dump.focus();
+  });
+  editBtn.addEventListener("click", function(){ dump.value = state.raw; goCapture(); });
+
+  dump.addEventListener("input", function(){ state.raw = dump.value; save(); });
+
+  // ---------- init ----------
+  if(state.items && state.items.length){
+    render(); goResults();
+  } else if(state.raw){
+    dump.value = state.raw;
+  }
+})();
+</script>
+</body>
+</html>
